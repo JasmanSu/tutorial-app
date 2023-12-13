@@ -31,13 +31,13 @@ class Post {
 
     public static function all ()
     {
-        return cache ()->Cache::rememberForever('posts.all', function () {
+        return cache()->rememberForever('posts.all', function () {
             return collect(File::files(resource_path("posts/")))
                 ->map(function($files){
                 $document = YamlFrontMatter::parseFile($files);
 
             return new Post(
-             $document->title,
+                $document->title,
                 $document->excerpt,
                 $document->date,
                 $document->body(),
@@ -50,7 +50,18 @@ class Post {
     
     public static function find($slug)
     {
-       return static::all()->firstWhere('slug', $slug);
+      return static::all()->firstWhere('slug', $slug);
+    }
+
+    public static function findOrFail($slug)
+    {
+      $post = static::find($slug);
+
+      if(! $post){
+        throw new ModelNotFoundException();
+      }
+      return $post;
+
     }
 
 }
