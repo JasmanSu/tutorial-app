@@ -1,8 +1,9 @@
 <?php
 
 use App\Models\Post;
-use Illuminate\Support\Facades\Route;
+use App\Models\Category;
 use PhpParser\Builder\Function_;
+use Illuminate\Support\Facades\Route;
 use Spatie\YamlFrontMatter\YamlFrontMatter;
 
 /*
@@ -32,4 +33,12 @@ Route::get('posts/{post:slug}' ,function (Post $post) {
     ]);
     
 
+});
+
+Route::get('categories/{category:slug}' ,function (Category $category) {
+
+    return view('posts', [
+        'posts' => $category->posts
+    ]);
+    
 });
